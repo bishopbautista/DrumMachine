@@ -1,0 +1,114 @@
+
+<html>
+<head>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.3/howler.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript">
+        var notes = [
+            {
+                "highHat": {
+                    play: true,
+                    ghostNote: true,
+                },
+                "snare": false,
+                "kick": false,
+                "tom": false,
+                "tom2": true,
+            },
+            {
+                "highHat": true,
+                "snare": true,
+                "kick": false,
+                "tom": false,
+                "tom2": true,
+            },
+            {
+                "highHat": true,
+                "snare": false,
+                "kick": false,
+                "tom": false,
+                "tom2": true,
+            },
+            {
+                "highHat": true,
+                "snare": true,
+                "kick": false,
+                "tom": false,
+                "tom2": true,
+            }
+        ];
+        var highHat = new Howl({
+            src: ['https://www.freesound.org/data/previews/46/46158_236326-lq.mp3'],
+            volume: 0.5,
+            onend: function() {
+                console.log('Finished playing High Hat!!');
+            }
+        });
+        var snare = new Howl({
+            src: ['https://www.freesound.org/data/previews/387/387186_7255534-lq.mp3'],
+            volume: 0.5,
+            onend: function() {
+                console.log('Finished playing snare!!');
+            }
+        });
+        var currentNoteCount = 0;
+        function playNote() {
+            console.log('Playing note: ', currentNoteCount);
+            var currentNote = notes[currentNoteCount];
+            console.log('Note: ', currentNote);
+            // Determine which sounds to play
+            if (currentNote.highHat === true) {
+                console.log('Playing high hat!');
+                highHat.play();
+            }
+            if (currentNote.snare === true) {
+                console.log('Playing snare!');
+                snare.play();
+            }
+            if (currentNoteCount === 3) {
+                currentNoteCount = 0;
+            } else {
+                currentNoteCount++;
+            }
+        }
+        setInterval(playNote, 100);
+        function startPlaying() {
+        }
+        function stopPlaying() {
+        }
+        var isPlaying = false;
+        $(document).ready(function() {
+            $('body').on('click', '#play', function() {
+                console.log('Clicked play button');
+                var notesValues = $('#notes').serializeArray();
+                console.log('Got value of notes: ', notesValues);
+            });
+        });
+    </script>
+</head>
+<body>
+
+<h1>Select your notes</h1>
+
+<form id="notes">
+    <table>
+        <tr>
+            <td>Hi-Hat</td>
+            <td><input type="checkbox" name="notes[0]['hiHat']"></td>
+            <td><input type="checkbox" name="notes[1]['hiHat']"></td>
+            <td><input type="checkbox" name="notes[2]['hiHat']"></td>
+            <td><input type="checkbox" name="notes[3]['hiHat']"></td>
+        </tr>
+        <tr>
+            <td>Snare</td>
+            <td><input type="checkbox" name="notes[0]['snare']"></td>
+            <td><input type="checkbox" name="notes[1]['snare']"></td>
+            <td><input type="checkbox" name="notes[2]['snare']"></td>
+            <td><input type="checkbox" name="notes[3]['snare']"></td>
+        </tr>
+    </table>
+</form>
+
+<button id="play">Play Beat</button>
+</body>
+</html>
